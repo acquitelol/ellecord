@@ -1,0 +1,7 @@
+{
+	"ignore": [
+	 "main.js"
+	],
+	"exec": "ellec ./src/main.le -o dist/plugin && ./dist/plugin",
+	"ext": "*.le"
+}

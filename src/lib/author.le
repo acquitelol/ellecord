@@ -1,0 +1,20 @@
+global pub;
+
+struct Author @nofmt {
+    string name;
+    BigInt *id;
+};
+
+fn Author::new(string name, BigInt *id) {
+    self := #alloc(Author);
+    self.name = name;
+    self.id = id;
+    return self;
+}
+
+fn Author::__fmt__(Author self, i32 nesting) {
+    return "{{
+        name: \"{}\",
+        id: {}n
+    }".format(self.name, self.id.to_string());
+}

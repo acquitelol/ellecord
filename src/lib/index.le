@@ -1,0 +1,30 @@
+use console;
+use plugin;
+global pub;
+
+struct Env @nofmt {
+    Plugin *this;
+    Console *console;
+};
+
+fn Plugin::start(Plugin *self, fn *callback) {
+    env := Env {
+        this = self,
+        console = &Console {
+            clauses = self.start_clauses
+        }
+    };
+
+    callback(env);
+}
+
+fn Plugin::stop(Plugin *self, fn *callback) {
+    env := Env {
+        this = self,
+        console = &Console {
+            clauses = self.stop_clauses
+        }
+    };
+
+    callback(env);
+}

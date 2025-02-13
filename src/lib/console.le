@@ -1,0 +1,50 @@
+global pub;
+
+struct Console @nofmt {
+    string[] clauses;
+};
+
+local fn __internal_wrapping(string type) {
+    if type == "string" {
+        return "\"{}\"";
+    }
+
+    if type == "char" {
+        return "'{}'";
+    }
+
+    return "{}";
+}
+
+fn Console::generic_log(Console *self, string kind, ElleMeta meta, void *args) {
+    content := "console.{}(".format(kind);
+
+    for i in 1..meta.arity {
+        fmt := __internal_wrapping(meta.types[i]);
+        content.extend(fmt.format(args.yield(string)));
+        i != meta.arity - 1 && content.extend(", ");
+    }
+
+    content.extend(");");
+    self.clauses.push(content);
+}
+
+fn Console::log(ElleMeta meta, @nofmt Console *self, ...args) @fmt {
+    self.generic_log("log", meta, args);
+}
+
+fn Console::info(ElleMeta meta, @nofmt Console *self, ...args) @fmt {
+    self.generic_log("info", meta, args);
+}
+
+fn Console::warn(ElleMeta meta, @nofmt Console *self, ...args) @fmt {
+    self.generic_log("warn", meta, args);
+}
+
+fn Console::error(ElleMeta meta, @nofmt Console *self, ...args) @fmt {
+    self.generic_log("error", meta, args);
+}
+
+fn Console::debug(ElleMeta meta, @nofmt Console *self, ...args) @fmt {
+    self.generic_log("debug", meta, args);
+}

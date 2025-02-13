@@ -1,0 +1,62 @@
+use author;
+
+struct Plugin @nofmt {
+    string name;
+    string description;
+    Author *[] authors;
+    string[] start_clauses;
+    string[] stop_clauses;
+};
+
+fn Plugin::new(string name, string description, string[] authors) {
+    $printf("Defining new plugin named \"{}\"", name.color("green").reset());
+    plugin := #alloc(Plugin);
+
+    plugin.name = name;
+    plugin.description = description;
+    plugin.authors = authors;
+    plugin.start_clauses = [];
+    plugin.stop_clauses = [];
+
+    return plugin;
+}
+
+fn Plugin::__fmt__(Plugin self, i32 nesting) {
+    content := "";
+
+    seconds := time(nil);
+    current_time := localtime(&seconds);
+
+    // Header
+    content.extend("/*\n");
+    content.extend(" * Vencord, a Discord client mod\n");
+    content.extend(" * Copyright (c) {} Vendicated and contributors\n"
+        .format(current_time.years + 1900));
+    content.extend(" * SPDX-License-Identifier: GPL-3.0-or-later\n");
+    content.extend(" */\n");
+
+    // Metadata
+    content.extend("export default definePlugin({\n");
+    content.extend("    name: \"{}\",\n".format(self.name));
+    content.extend("    description: \"{}\",\n".format(self.description));
+    content.extend("    authors: [{}],\n\n".format(self.authors
+        .map<string>(fn(Author *x) "{}".format(*x))
+        .join(", ")));
+
+    // Start clauses
+    content.extend("    start() {\n");
+    content.extend("        {}\n".format(self.start_clauses
+        .join("\n{}".format(" ".repeat(8)))));
+    content.extend("    },\n\n");
+
+    // Stop clauses
+    content.extend("    stop() {\n");
+    content.extend("        {}\n".format(self.stop_clauses
+        .join("\n{}".format(" ".repeat(8)))));
+    content.extend("    }\n");
+
+    // Metadata
+    content.extend("})\n");
+
+    return content;
+}

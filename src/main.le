@@ -1,0 +1,11 @@
+use std/prelude;
+use std/bigint;
+use plugin;
+
+fn main(string[] args) {
+    plugin := definePlugin();
+    path := "{}.js".format(args[0]);
+    contents := "{}".format(*plugin);
+
+    io::write_to_file(path, contents);
+}

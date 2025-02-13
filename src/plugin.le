@@ -1,0 +1,27 @@
+use lib/index;
+
+pub fn definePlugin() {
+    plugin := Plugin::new(
+        "Meow",
+        "A plugin that literally meows at you",
+        [Author::new(
+            "Rosie",
+            BigInt::new("581573474296791211")
+        ), Author::new(
+            "Nino",
+            BigInt::new("125792905729129872")
+        )]
+    );
+
+    plugin.start(fn(Env js) {
+        js.console.error("Hello from {}!".format(js.this.name));
+        js.console.warn("My favourite number is {}".format(13 * 3));
+    });
+
+    plugin.stop(fn(Env js) {
+        js.console.error("ur evil");
+        js.console.log(":3");
+    });
+
+    return plugin;
+}
