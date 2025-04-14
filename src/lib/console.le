@@ -4,12 +4,10 @@ struct Console @nofmt {
     string[] clauses;
 };
 
-local fn __internal_wrapping(string type) {
-    if type == "string" {
+!pub fn __internal_wrapping(string ty) {
+    if ty == "string" {
         return "\"{}\"";
-    }
-
-    if type == "char" {
+    } else if ty == "char" {
         return "'{}'";
     }
 

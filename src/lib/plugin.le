@@ -10,15 +10,15 @@ struct Plugin @nofmt {
 
 fn Plugin::new(string name, string description, string[] authors) {
     $printf("Defining new plugin named \"{}\"", name.color("green").reset());
-    plugin := #alloc(Plugin);
+    self := #alloc(Plugin);
 
-    plugin.name = name;
-    plugin.description = description;
-    plugin.authors = authors;
-    plugin.start_clauses = [];
-    plugin.stop_clauses = [];
+    self.name = name;
+    self.description = description;
+    self.authors = authors;
+    self.start_clauses = [];
+    self.stop_clauses = [];
 
-    return plugin;
+    return self;
 }
 
 fn Plugin::__fmt__(Plugin self, i32 nesting) {
